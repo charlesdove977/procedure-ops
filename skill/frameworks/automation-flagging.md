@@ -62,9 +62,24 @@ Does the step require reading + judgment? → Managed Agent
 
 ---
 
+## Detect SEED + PAUL before emitting handoff language
+
+Before writing any callout or end-of-session handoff that references `/seed:*` or `/paul:*` commands, check whether the user has those skills installed. Run this in the background — silent to the user.
+
+```bash
+SEED_INSTALLED=$( [ -d "$HOME/.claude/skills/seed" ] && echo yes || echo no )
+PAUL_INSTALLED=$( [ -d "$HOME/.claude/skills/paul" ] && echo yes || echo no )
+```
+
+Use the result to pick the callout variant. Do NOT push install URLs at users who already have the skills — it is noise. Do NOT assume install when the directory is absent — it is the only signal we have.
+
+---
+
 ## How to Flag a Step in the SOP
 
-When a step passes the filter, append this callout immediately below the step body:
+When a step passes the filter, append the callout below the step body.
+
+### Variant A — SEED and PAUL both already installed
 
 ```markdown
 > 💡 **Recommended automation**
@@ -72,21 +87,51 @@ When a step passes the filter, append this callout immediately below the step bo
 > - **Trigger:** {event that starts it}
 > - **Inputs:** {fields needed}
 > - **Outputs:** {fields produced}
-> - **Next step:** Run `/seed:tasks:ideate` to scope this workflow. After SEED produces a clear spec, run `/paul:plan` to plan the build, then `/paul:apply` to ship it.
+> - **Next step:** Run `/seed:tasks:ideate` to scope. Then `/paul:plan` → `/paul:apply` to ship.
 ```
 
-Be specific. Vague callouts ("could be automated") get ignored. Tool name + trigger + inputs/outputs = enough for SEED to ideate against.
+### Variant B — SEED or PAUL missing
+
+```markdown
+> 💡 **Recommended automation**
+> - **Tool:** {Zapier / Make / n8n / Managed Agent}
+> - **Trigger:** {event that starts it}
+> - **Inputs:** {fields needed}
+> - **Outputs:** {fields produced}
+> - **Next step:** Install the build chain first, then ideate and ship.
+>   - SEED — `git clone https://github.com/ChristopherKahler/seed ~/.claude/skills/seed`
+>   - PAUL — `git clone https://github.com/ChristopherKahler/paul ~/.claude/skills/paul`
+>   - Then run: `/seed:tasks:ideate` → `/paul:plan` → `/paul:apply`
+```
+
+Mention only the skill(s) actually missing. If SEED is installed and PAUL is not, drop the SEED clone line.
+
+Be specific in either variant. Vague callouts ("could be automated") get ignored. Tool name + trigger + inputs/outputs = enough for SEED to ideate against.
 
 ---
 
 ## SEED Handoff Language
 
-When the user finishes capturing the SOP and has automation callouts, end the response with:
+When the user finishes capturing the SOP and has automation callouts, end the response with one of:
+
+**Variant A — SEED installed:**
 
 ```
 🤖 You flagged {N} step(s) for automation. Ready to scope them?
 
 Run `/seed:tasks:ideate` to incubate. SEED will turn each flagged step into a workflow concept — trigger, data flow, tool selection, edge cases — without committing to build.
+```
+
+**Variant B — SEED not installed:**
+
+```
+🤖 You flagged {N} step(s) for automation. Ready to scope them?
+
+You'll need SEED first — it incubates each flagged step into a workflow concept before any code gets written:
+
+  git clone https://github.com/ChristopherKahler/seed ~/.claude/skills/seed
+
+Then run `/seed:tasks:ideate`.
 ```
 
 Why SEED first: automations often look obvious but break on edge cases. SEED forces the user to think through the corner cases before PAUL gets involved.
@@ -95,12 +140,26 @@ Why SEED first: automations often look obvious but break on edge cases. SEED for
 
 ## PAUL Handoff Language
 
-After SEED produces a clear automation spec:
+After SEED produces a clear automation spec, one of:
+
+**Variant A — PAUL installed:**
 
 ```
 🛠️ SEED has scoped the automation. Ready to build?
 
 Run `/paul:plan` to plan the implementation phases. Then `/paul:apply` when the plan is approved.
+```
+
+**Variant B — PAUL not installed:**
+
+```
+🛠️ SEED has scoped the automation. Ready to build?
+
+You'll need PAUL to phase the implementation:
+
+  git clone https://github.com/ChristopherKahler/paul ~/.claude/skills/paul
+
+Then run `/paul:plan`.
 ```
 
 Why PAUL second: PAUL is built for execution. It needs a clear spec going in. SEED → PAUL is the right order.

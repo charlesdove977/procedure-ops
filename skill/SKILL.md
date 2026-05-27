@@ -70,7 +70,8 @@ Nothing always-load. Skill is stateless — finished SOPs live in `SOPs/` at the
 @frameworks/sop-anatomy.md (always pulled by interview, from-recording, audit — defines the canonical SOP structure)
 @frameworks/raci-matrix.md (when the process has more than one actor)
 @frameworks/swim-lane-format.md (when multiple actors hand off to each other)
-@frameworks/automation-flagging.md (when any step looks automatable — includes Zapier / n8n / Make / managed agent routing logic and SEED + PAUL handoff language)
+@frameworks/automation-flagging.md (when any step looks automatable — Zapier / n8n / Make / managed agent routing logic, SEED + PAUL handoff language, install-detection for both skills)
+@frameworks/hosting-options.md (when recommending where the team should READ the SOPs — Local markdown / Google Drive / Notion. Loaded by scaffold-business and delegate-pack.)
 
 @templates/sop-document.md (output skeleton for new SOPs)
 @templates/delegate-packet.md (output for delegate-pack)

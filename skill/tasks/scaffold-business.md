@@ -103,7 +103,37 @@ Slug: `<slug>` · Folder: [`SOPs/<slug>/`](<slug>/) · <One-line description>
 | _No SOPs yet._ | | | |
 ```
 
-### Phase 5 — Report
+### Phase 5 — Hosting Recommendation
+
+Once the local scaffold is written, ask where the team will READ the SOPs day-to-day. The choice is per-business and sticky — only ask once per scaffold.
+
+Load `frameworks/hosting-options.md` for the full pattern. Ask via `AskUserQuestion`:
+
+> Where will your team READ these SOPs day-to-day?
+>
+> - **Local markdown only** — Technical team, git-based workflow. No host setup needed.
+> - **Google Drive (Google Docs)** — Non-technical delegates, mobile-friendly, easiest for VAs.
+> - **Notion** — Team wiki, comments + database properties. Best when the team already lives in Notion.
+> - **Both Drive and Notion** — Drive for VAs, Notion for the internal team.
+
+Save the answer to the business README under a new `## Hosting` section so future SOP writes pick it up automatically:
+
+```markdown
+## Hosting
+
+- **Primary host:** {Local / Google Drive / Notion / Both}
+- **Drive folder:** {URL or "n/a"}
+- **Notion database:** {URL or "n/a"}
+- **Sync rule:** Markdown in this repo is the source of truth. Published copies are exports, not edits.
+```
+
+For Drive: offer to run `gws docs create --from-markdown` per SOP once the user supplies a parent folder ID. Do not auto-create the Drive folder hierarchy — confirm structure first.
+
+For Notion: offer to run the `/notion-create-database` skill (if installed) to scaffold a SOP database with the schema in `frameworks/hosting-options.md`. If the skill is not installed, suggest the user create the database manually with the schema printed in the chat.
+
+If the user picks "Local only", skip — done.
+
+### Phase 6 — Report
 
 Tell the user:
 
@@ -111,6 +141,7 @@ Tell the user:
 ✅ Business scaffolded at `SOPs/<slug>/`.
 
 Departments created: <list>
+Hosting: <Local / Drive / Notion / Both>
 
 Next step: run `/sop-build interview` and pick `<slug>` to add your first SOP.
 ```

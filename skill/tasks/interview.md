@@ -108,13 +108,22 @@ Load `checklists/sop-ready-to-delegate.md` and silently walk it. If any item fai
 
 ### Phase 10 — Next Step Suggestions
 
-If any step was flagged for automation, end the response with:
+If any step was flagged for automation, load `frameworks/automation-flagging.md` and emit the SEED + PAUL handoff using **Variant A or Variant B** depending on whether `~/.claude/skills/seed/` and `~/.claude/skills/paul/` exist on the user's machine. Do not push install URLs at users who already have the skills.
 
-> 🤖 You flagged {N} step(s) for automation. When you are ready to scope them, run `/seed:tasks:ideate` to incubate the workflow. Once SEED produces a clear spec, hand off to `/paul:plan`.
+Detection commands (run silently):
+
+```bash
+test -d "$HOME/.claude/skills/seed" && echo seed:yes || echo seed:no
+test -d "$HOME/.claude/skills/paul" && echo paul:yes || echo paul:no
+```
 
 If the SOP is meant for a VA handoff, end with:
 
 > 📦 To bundle this for a VA, run `/sop-build delegate-pack` and point it at `<path>`.
+
+If the business this SOP belongs to has no `## Hosting` section in `SOPs/<business>/README.md`, end with:
+
+> 🗂️ Want your team to read this somewhere besides the repo? Run `/sop-build scaffold-business` again to set a Google Drive or Notion host for this business — markdown stays the source of truth, the host gets a published copy.
 
 ## Acceptance Criteria
 

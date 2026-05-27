@@ -1,9 +1,17 @@
+<p align="center">
+  <img src="docs/hero.png" alt="Procedure Ops — COO-in-a-box SOP builder for Claude Code" width="900">
+</p>
+
 # Procedure Ops
 
 > COO-in-a-box for [Claude Code](https://claude.ai/code). Builds ironclad Standard Operating Procedures from interviews, screen-recording transcripts, or existing drafts — and pushes back on weak steps before they get written down.
 
-[![npm version](https://img.shields.io/npm/v/procedure-ops.svg)](https://www.npmjs.com/package/procedure-ops)
-[![license](https://img.shields.io/npm/l/procedure-ops.svg)](LICENSE)
+<p>
+  <a href="https://www.charlieautomates.com/charlie-os-vs/"><img src="https://img.shields.io/badge/Work_with_Charlie-Charlie_OS-7c3aed?style=for-the-badge&logo=anthropic&logoColor=white" alt="Work with Charlie"></a>
+  <a href="https://github.com/charlesdove977/procedure-ops"><img src="https://img.shields.io/github/v/release/charlesdove977/procedure-ops?display_name=tag&include_prereleases&sort=semver&label=release&color=blue" alt="release"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/charlesdove977/procedure-ops?color=green" alt="MIT license"></a>
+  <a href="https://github.com/charlesdove977/procedure-ops/stargazers"><img src="https://img.shields.io/github/stars/charlesdove977/procedure-ops?style=flat" alt="stars"></a>
+</p>
 
 Procedure Ops ships the **`sop-build`** skill: a structured, opinionated SOP author that captures *what* you do, *who* it is for, *how* to escalate when it breaks, and *which* steps belong on Zapier / Make / n8n / a Claude managed agent instead of in a human's hands.
 
@@ -27,7 +35,9 @@ Procedure Ops fixes that by acting like a COO during the build:
 
 ## Install
 
-### Option 1 — `npx` (recommended, no global install)
+> **Note on `npm`:** Procedure Ops is not yet published to the npm registry — the `npx procedure-ops install` commands below will work once v0.1.0 ships. **Until then, use the GitHub-direct install in Option 3.** The "package not found" status on the npm badge above is expected during this window.
+
+### Option 1 — `npx` (recommended once published)
 
 ```bash
 npx procedure-ops install
@@ -40,7 +50,7 @@ npm view procedure-ops version          # check latest
 npx procedure-ops@latest update         # refresh in place
 ```
 
-### Option 2 — Global install
+### Option 2 — Global install (once published)
 
 ```bash
 npm install -g procedure-ops
@@ -48,6 +58,15 @@ procedure-ops install
 ```
 
 After global install, the `procedure-ops` command is on your `$PATH` and runs without `npx`.
+
+### Option 3 — Install directly from GitHub (works today)
+
+```bash
+npx github:charlesdove977/procedure-ops install
+npx github:charlesdove977/procedure-ops install --with-commands   # explicit slash commands too
+```
+
+`npx` clones the repo on the fly, runs the bundled CLI, and copies the skill into `~/.claude/skills/sop-build/`. No npm publish required. To update later, simply re-run with `update` instead of `install`.
 
 ### Project-scoped install (per repo)
 
@@ -164,6 +183,17 @@ Bundles a finished SOP into a handoff packet for a VA, contractor, or new hire. 
 
 SOPs themselves are written to your *project*, not into the skill folder. Default location: `<repo-root>/SOPs/<business-slug>/<department-slug>/<sop-slug>.md`.
 
+### Where the team actually reads the SOPs
+
+Local markdown is fine for engineers but useless to a VA. When you scaffold a new business, Procedure Ops asks where the team will READ these SOPs day-to-day:
+
+- **Local markdown only** — Technical teams, git-based workflow. Zero setup.
+- **Google Drive (Google Docs)** — Easiest for VAs and non-technical hires. Markdown stays the source of truth; Drive gets a published copy. If you have the [`gws`](https://github.com/) CLI, Procedure Ops can call `gws docs create --from-markdown` to mirror per SOP.
+- **Notion** — Team wiki with database properties (Business / Department / Owner / Status). Best when the team already lives in Notion. Procedure Ops uses the `notion-create-database` skill (if installed) to scaffold the schema.
+- **Both** — Drive for VAs, Notion for the internal team.
+
+The choice is per-business and sticky — saved to `SOPs/<business>/README.md` under a `## Hosting` section. Future SOP writes honor it without re-asking. See [`skill/frameworks/hosting-options.md`](skill/frameworks/hosting-options.md) for the full pattern.
+
 ---
 
 ## SOP anatomy
@@ -206,7 +236,23 @@ Each flagged step gets an inline callout in the SOP:
 > - **Next step:** Run `/seed:tasks:ideate` to scope. Then `/paul:plan` to build.
 ```
 
-Procedure Ops never builds the automation itself — that is a deliberate handoff to the [SEED](https://github.com/) (incubate) and [PAUL](https://github.com/) (plan + ship) workflows. Capture the SOP first; ideate the automation after.
+Procedure Ops never builds the automation itself — that is a deliberate handoff to two other Claude Code skills by [Christopher Kahler](https://github.com/ChristopherKahler):
+
+- **[SEED](https://github.com/ChristopherKahler/seed)** — AI project incubator. Turn a flagged step into a scoped workflow concept (trigger, data flow, tool selection, edge cases) before committing to build.
+- **[PAUL](https://github.com/ChristopherKahler/paul)** — Plan / Apply / Unify loop. Once SEED has a clear spec, PAUL phases the implementation, tracks milestones, and ships.
+
+**Procedure Ops only recommends installing SEED + PAUL if they are missing from your machine.** The skill checks `~/.claude/skills/seed/` and `~/.claude/skills/paul/` before emitting any handoff language. If both are already installed, you just get a clean `/seed:tasks:ideate` → `/paul:plan` → `/paul:apply` chain in the SOP — no install noise. If one is missing, the SOP callout includes the exact `git clone` line for the missing skill.
+
+Install if needed:
+
+```bash
+# SEED
+git clone https://github.com/ChristopherKahler/seed.git ~/.claude/skills/seed
+# PAUL
+git clone https://github.com/ChristopherKahler/paul.git ~/.claude/skills/paul
+```
+
+Procedure Ops captures the SOP first; SEED + PAUL handle the build.
 
 ---
 
@@ -234,6 +280,15 @@ SOPs live in your project, not in the skill folder. Updating the skill (`npx pro
 
 **Can I customize the skill after installing?**
 Yes — the installed files are yours. Edit anything in `~/.claude/skills/sop-build/`. The next `update` will overwrite your edits, so consider forking the repo instead if you are making meaningful changes.
+
+---
+
+## Related projects
+
+- **[Charlie OS](https://www.charlieautomates.com/charlie-os/)** — one-click Claude Code setup that bundles BASE, CARL, PAUL, SEED, Skillsmith, and 32 curated skills. If you want Procedure Ops *plus* the rest of Charles's stack on day one, install Charlie OS instead.
+- **[Work with Charlie](https://www.charlieautomates.com/charlie-os-vs/)** — done-for-you install, custom skill builds, and 1:1 Claude Code engineering for founders and agency operators.
+- **[SEED](https://github.com/ChristopherKahler/seed)** — AI project incubator skill.
+- **[PAUL](https://github.com/ChristopherKahler/paul)** — Plan / Apply / Unify implementation loop skill.
 
 ---
 

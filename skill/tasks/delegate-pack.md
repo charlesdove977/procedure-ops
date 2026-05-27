@@ -47,6 +47,17 @@ If the SOP has TODO placeholders for trainings not yet recorded, list those as b
 
 Load `checklists/handoff-completeness.md`. Walk every item. If anything fails, fix before writing the packet. Common fails: no first-week check-in cadence, no manager named, access list missing a tool that appears in the SOP steps.
 
+### Phase 4b — Confirm the Delegate's Reading Surface
+
+Read the parent business README (`SOPs/<business>/README.md`) for a `## Hosting` section. The delegate needs to read the SOP somewhere they can actually navigate — not the raw markdown in a git repo they cannot clone.
+
+- **If Hosting = Local only** — flag a warning: "This packet links to the raw markdown SOP. Confirm your delegate has git access and a markdown viewer, OR set a Google Drive / Notion host first by re-running `/sop-build scaffold-business` for `<business>`."
+- **If Hosting = Google Drive** — load `frameworks/hosting-options.md` and verify the Drive folder URL is set. The packet's "Source SOP" link should point at the Google Doc, not the markdown.
+- **If Hosting = Notion** — same — the packet should link to the Notion page.
+- **If Hosting = Both** — link to the Google Doc by default (lowest-friction for VAs), reference the Notion page as an alternate.
+
+Save the resolved reading-surface URL into the packet's header so the delegate has one click to open it.
+
 ### Phase 5 — Write the Packet
 
 Load `templates/delegate-packet.md`. Fill in:
