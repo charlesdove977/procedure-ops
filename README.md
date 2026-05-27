@@ -8,8 +8,9 @@
 
 <p>
   <a href="https://www.charlieautomates.com/charlie-os-vs/"><img src="https://img.shields.io/badge/Work_with_Charlie-Charlie_OS-7c3aed?style=for-the-badge&logo=anthropic&logoColor=white" alt="Work with Charlie"></a>
-  <a href="https://github.com/charlesdove977/procedure-ops"><img src="https://img.shields.io/github/v/release/charlesdove977/procedure-ops?display_name=tag&include_prereleases&sort=semver&label=release&color=blue" alt="release"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/charlesdove977/procedure-ops?color=green" alt="MIT license"></a>
+  <a href="https://www.npmjs.com/package/procedure-ops"><img src="https://img.shields.io/npm/v/procedure-ops?color=blue&label=npm" alt="npm version"></a>
+  <a href="https://www.npmjs.com/package/procedure-ops"><img src="https://img.shields.io/npm/dt/procedure-ops?color=blue&label=downloads" alt="npm downloads"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/npm/l/procedure-ops?color=green" alt="MIT license"></a>
   <a href="https://github.com/charlesdove977/procedure-ops/stargazers"><img src="https://img.shields.io/github/stars/charlesdove977/procedure-ops?style=flat" alt="stars"></a>
 </p>
 
@@ -35,9 +36,7 @@ Procedure Ops fixes that by acting like a COO during the build:
 
 ## Install
 
-> **Note on `npm`:** Procedure Ops is not yet published to the npm registry — the `npx procedure-ops install` commands below will work once v0.1.0 ships. **Until then, use the GitHub-direct install in Option 3.** The "package not found" status on the npm badge above is expected during this window.
-
-### Option 1 — `npx` (recommended once published)
+### Option 1 — `npx` (recommended)
 
 ```bash
 npx procedure-ops install
@@ -46,11 +45,11 @@ npx procedure-ops install
 Installs the skill to `~/.claude/skills/sop-build/`. Run again with `update` to refresh after a package upgrade:
 
 ```bash
-npm view procedure-ops version          # check latest
+npm view procedure-ops version          # check the latest published version
 npx procedure-ops@latest update         # refresh in place
 ```
 
-### Option 2 — Global install (once published)
+### Option 2 — Global install
 
 ```bash
 npm install -g procedure-ops
@@ -59,14 +58,14 @@ procedure-ops install
 
 After global install, the `procedure-ops` command is on your `$PATH` and runs without `npx`.
 
-### Option 3 — Install directly from GitHub (works today)
+### Option 3 — Install directly from GitHub
 
 ```bash
 npx github:charlesdove977/procedure-ops install
 npx github:charlesdove977/procedure-ops install --with-commands   # explicit slash commands too
 ```
 
-`npx` clones the repo on the fly, runs the bundled CLI, and copies the skill into `~/.claude/skills/sop-build/`. No npm publish required. To update later, simply re-run with `update` instead of `install`.
+`npx` clones the repo on the fly and runs the bundled CLI. Useful if you want to pin to a specific commit or test an unreleased branch.
 
 ### Project-scoped install (per repo)
 
