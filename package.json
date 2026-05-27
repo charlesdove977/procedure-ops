@@ -1,0 +1,44 @@
+{
+  "name": "procedure-ops",
+  "version": "0.1.0",
+  "description": "Claude Code skill that builds ironclad SOPs from interviews, screen-recording transcripts, or existing drafts. Acts like a COO who pushes back on weak steps before they get written down.",
+  "keywords": [
+    "claude-code",
+    "claude",
+    "skill",
+    "sop",
+    "standard-operating-procedure",
+    "delegation",
+    "operations",
+    "automation",
+    "raci",
+    "swim-lane",
+    "process-documentation"
+  ],
+  "homepage": "https://github.com/charlesdove977/procedure-ops#readme",
+  "bugs": {
+    "url": "https://github.com/charlesdove977/procedure-ops/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/charlesdove977/procedure-ops.git"
+  },
+  "license": "MIT",
+  "author": "Charles J Dove",
+  "type": "commonjs",
+  "bin": {
+    "procedure-ops": "bin/procedure-ops.js"
+  },
+  "files": [
+    "bin/",
+    "skill/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=14"
+  },
+  "scripts": {
+    "test": "node bin/procedure-ops.js --version && echo 'OK'"
+  }
+}

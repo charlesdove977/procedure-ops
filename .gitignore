@@ -1,0 +1,9 @@
+node_modules/
+*.log
+npm-debug.log*
+.DS_Store
+.idea/
+.vscode/
+*.tgz
+package-lock.json
+yarn.lock
